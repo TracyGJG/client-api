@@ -1,0 +1,14 @@
+body {
+  margin: 0.5em;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* main {
+  position: absolute;
+  inset: 0;
+} */
+
+h1 > span {
+  font-style: italic;
+}
