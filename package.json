@@ -1,0 +1,29 @@
+{
+  "name": "client-api",
+  "version": "1.0.0",
+  "description": "Client-side module for interacting with a web/JSON API",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TracyGJG/client-api.git"
+  },
+  "keywords": [
+    "client",
+    "API"
+  ],
+  "author": "Tracy-G J Gilmore",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/TracyGJG/client-api/issues"
+  },
+  "homepage": "https://github.com/TracyGJG/client-api#readme",
+  "devDependencies": {
+    "vite": "^7.0.6"
+  }
+}
