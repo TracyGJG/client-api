@@ -1,15 +1,21 @@
-import { describe, expect, test, beforeEach, afterEach } from 'vitest';
+import { describe, expect, test, vi, afterEach, beforeEach } from 'vitest';
 
 import ClientApi from './client-api.js';
 
 describe('Client API module', () => {
+  let errorHandler = vi.fn();
+
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
   test('to be a function', () => {
     expect(typeof ClientApi).toBe('function');
   });
 
   describe('returns five CRUD methods when called', () => {
     test('using a url not ending with back-slash', () => {
-      const methods = ClientApi('testUrl');
+      const methods = ClientApi('testUrl', errorHandler);
 
       expect(Object.keys(methods).length).toBe(5);
       expect(methods.create).toBeDefined();
@@ -20,7 +26,7 @@ describe('Client API module', () => {
     });
 
     test('using a url ending with back-slash', () => {
-      const methods = ClientApi('testUrl/');
+      const methods = ClientApi('testUrl/', errorHandler);
 
       expect(Object.keys(methods).length).toBe(5);
       expect(methods.create).toBeDefined();
@@ -32,7 +38,7 @@ describe('Client API module', () => {
   });
 
   describe('using the create method', () => {
-    const methods = ClientApi('http://testUrl');
+    const methods = ClientApi('http://testUrl', errorHandler);
 
     afterEach(() => {
       fetch.resetMocks();
@@ -56,14 +62,15 @@ describe('Client API module', () => {
       fetch.mockResponseOnce({ body: 'ok', status: 500 });
 
       expect(fetch.requests().length).toEqual(0);
+      expect(errorHandler).toHaveBeenCalledTimes(0);
 
-      const exceptionTest = () =>
-        methods
-          .create({ hello: 'world' })
-          .then((_) => _)
-          .catch((err) => err.message);
-      expect(await exceptionTest()).toBe('Response status: 500');
+      await methods.create({ hello: 'world' });
 
+      expect(errorHandler).toHaveBeenCalledTimes(1);
+      expect(errorHandler).toHaveBeenLastCalledWith({
+        status: 500,
+        statusText: '',
+      });
       expect(fetch.requests().length).toEqual(1);
       expect(fetch.requests()[0].method).toEqual('POST');
       expect(fetch.requests()[0].url).toEqual('http://testurl/');
@@ -71,7 +78,7 @@ describe('Client API module', () => {
   });
 
   describe('using the read method', () => {
-    const methods = ClientApi('http://testUrl');
+    const methods = ClientApi('http://testUrl', errorHandler);
 
     afterEach(() => {
       fetch.resetMocks();
@@ -110,7 +117,7 @@ describe('Client API module', () => {
   });
 
   describe('using the update method', () => {
-    const methods = ClientApi('http://testUrl');
+    const methods = ClientApi('http://testUrl', errorHandler);
 
     afterEach(() => {
       fetch.resetMocks();
@@ -132,7 +139,7 @@ describe('Client API module', () => {
   });
 
   describe('using the modify method', () => {
-    const methods = ClientApi('http://testUrl');
+    const methods = ClientApi('http://testUrl', errorHandler);
 
     afterEach(() => {
       fetch.resetMocks();
@@ -154,7 +161,7 @@ describe('Client API module', () => {
   });
 
   describe('using the delete method', () => {
-    const methods = ClientApi('http://testUrl');
+    const methods = ClientApi('http://testUrl', errorHandler);
 
     afterEach(() => {
       fetch.resetMocks();

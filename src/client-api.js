@@ -1,10 +1,13 @@
-function clientApi(baseUrl) {
+function clientApi(baseUrl, fnErrorHandler) {
   const BASE_URL = `${baseUrl}${baseUrl.at(-1) === '/' ? '' : '/'}`;
 
   async function issueRequest(url, opts) {
     const response = await fetch(url, opts);
     if (!response.ok) {
-      throw Error(`Response status: ${response.status}`);
+      return fnErrorHandler({
+        status: response.status,
+        statusText: response.statusText,
+      });
     }
     return await response.json();
   }
