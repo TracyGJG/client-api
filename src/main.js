@@ -23,14 +23,16 @@ const created = await PostsAPI.create({
 console.log('created', created);
 console.table(await PostsAPI.read());
 
-const updated = await PostsAPI.update(created.id, {
+const updated = await PostsAPI.update({
+  id: created.id,
   title: "Hitchhiker's Guide to the Galaxy, The",
   views: 666,
 });
 console.log('updated', updated);
 console.table(await PostsAPI.read());
 
-const modified = await PostsAPI.modify(created.id, {
+const modified = await PostsAPI.modify({
+  id: created.id,
   views: '007',
 });
 console.log('modified', modified);

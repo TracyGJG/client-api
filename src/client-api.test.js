@@ -128,13 +128,14 @@ describe('Client API module', () => {
 
       expect(fetch.requests().length).toEqual(0);
 
-      expect(await methods.update(1, { data: '67890' })).toStrictEqual({
+      let result = await methods.update({ data: '67890' });
+      expect(result).toStrictEqual({
         data: '67890',
       });
 
       expect(fetch.requests().length).toEqual(1);
       expect(fetch.requests()[0].method).toEqual('PUT');
-      expect(fetch.requests()[0].url).toEqual('http://testurl/1');
+      expect(fetch.requests()[0].url).toEqual('http://testurl/');
     });
   });
 
@@ -150,7 +151,7 @@ describe('Client API module', () => {
 
       expect(fetch.requests().length).toEqual(0);
 
-      expect(await methods.modify(1, { data: '67890' })).toStrictEqual({
+      expect(await methods.modify({ id: 1, data: '67890' })).toStrictEqual({
         data: '67890',
       });
 

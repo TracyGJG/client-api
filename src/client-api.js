@@ -24,13 +24,15 @@ function clientApi(baseUrl, fnErrorHandler) {
         method: 'GET',
       });
     },
-    update(id, data) {
+    update(data) {
+      const id = data?.id ?? '';
       return issueRequest(`${BASE_URL}${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       });
     },
-    modify(id, data) {
+    modify(data) {
+      const id = data.id;
       return issueRequest(`${BASE_URL}${id}`, {
         method: 'PATCH',
         body: JSON.stringify(data),
