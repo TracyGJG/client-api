@@ -1,4 +1,4 @@
-import { describe, expect, test, vi, afterEach, beforeEach } from 'vitest';
+import { describe, expect, test, vi, afterEach } from 'vitest';
 
 import ClientApi from './client-api.js';
 
@@ -59,7 +59,7 @@ describe('Client API module', () => {
     });
 
     test('will through an exception when a request fails', async () => {
-      fetch.mockResponseOnce({ body: 'ok', status: 500 });
+      fetch.mockResponseOnce({ body: 'error', status: 500 });
 
       expect(fetch.requests().length).toEqual(0);
       expect(errorHandler).toHaveBeenCalledTimes(0);
